@@ -1,4 +1,4 @@
-struct BagArray<Item> {
+struct ArrayBag<Item> {
     var count: Int {
         return storage.count
     }
@@ -15,7 +15,7 @@ struct BagArray<Item> {
     }
 }
 
-extension BagArray: Sequence, IteratorProtocol {
+extension ArrayBag: Sequence, IteratorProtocol {
     mutating func next() -> Item? {
         guard current < storage.count else { return nil }
 
@@ -25,21 +25,21 @@ extension BagArray: Sequence, IteratorProtocol {
 }
 
 
-var bagArray = BagArray<Int>()
-bagArray.isEmpty
-bagArray.add(1)
-bagArray.add(2)
-bagArray.add(3)
-bagArray.isEmpty
-bagArray.add(4)
-bagArray.add(5)
-bagArray.count
+var arrayBag = ArrayBag<Int>()
+arrayBag.isEmpty
+arrayBag.add(1)
+arrayBag.add(2)
+arrayBag.add(3)
+arrayBag.isEmpty
+arrayBag.add(4)
+arrayBag.add(5)
+arrayBag.count
 
-for item in bagArray {
+for item in arrayBag {
     print(item)
 }
 
-class BagLinkedList<T> {
+class LinkedListBag<T> {
     private class Item {
         let value: T
         let next: Item?
@@ -67,7 +67,7 @@ class BagLinkedList<T> {
     }
 }
 
-extension BagLinkedList: Sequence, IteratorProtocol {
+extension LinkedListBag: Sequence, IteratorProtocol {
     func next() -> T? {
         guard let item = currentItem else { return nil }
         currentItem = item.next
@@ -76,17 +76,17 @@ extension BagLinkedList: Sequence, IteratorProtocol {
     }
 }
 
-var bagLinkedList = BagLinkedList<Int>()
-bagLinkedList.isEmpty
-bagLinkedList.add(1)
-bagLinkedList.add(2)
-bagLinkedList.add(3)
-bagLinkedList.isEmpty
-bagLinkedList.add(4)
-bagLinkedList.add(5)
-bagLinkedList.count
+var linkedListBag = LinkedListBag<Int>()
+linkedListBag.isEmpty
+linkedListBag.add(1)
+linkedListBag.add(2)
+linkedListBag.add(3)
+linkedListBag.isEmpty
+linkedListBag.add(4)
+linkedListBag.add(5)
+linkedListBag.count
 
-for item in bagLinkedList {
+for item in linkedListBag {
     print(item)
 }
 

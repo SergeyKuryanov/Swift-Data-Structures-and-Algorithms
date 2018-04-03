@@ -11,7 +11,7 @@ It can be implemented with array or with linked list.
 ### Array
 
 ```swift
-struct BagArray<Item> {
+struct ArrayBag<Item> {
     var count: Int {
         return storage.count
     }
@@ -28,7 +28,7 @@ struct BagArray<Item> {
     }
 }
 
-extension BagArray: Sequence, IteratorProtocol {
+extension ArrayBag: Sequence, IteratorProtocol {
     mutating func next() -> Item? {
         guard current < storage.count else { return nil }
 
@@ -40,7 +40,7 @@ extension BagArray: Sequence, IteratorProtocol {
 ### Linked List
 
 ```swift
-class BagLinkedList<T> {
+class LinkedListBag<T> {
     private class Item {
         let value: T
         let next: Item?
@@ -68,7 +68,7 @@ class BagLinkedList<T> {
     }
 }
 
-extension BagLinkedList: Sequence, IteratorProtocol {
+extension LinkedListBag: Sequence, IteratorProtocol {
     func next() -> T? {
         guard let item = currentItem else { return nil }
         currentItem = item.next
