@@ -124,7 +124,7 @@ class WeightedQuickUnion: QuickUnion {
 }
 ```
 
-## Weighted Quick-Union With Path Compression
+### Weighted Quick-Union With Path Compression
 
 Initialize |          Union           |          Find
 :--------: | :----------------------: | :----------------------:

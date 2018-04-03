@@ -1,8 +1,8 @@
 ## Bag
 
 Add | Count
-:--------: | :---:
-O(1)       | O(1) 
+:-: | :---:
+O(1)| O(1) 
 
 A bag is a collection where removing items is not supported.
 
