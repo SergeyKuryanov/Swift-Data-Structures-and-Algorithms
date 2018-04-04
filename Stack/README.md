@@ -8,7 +8,7 @@ It can be implemented with array or with linked list.
 
 Pop | Push
 :-: | :---:
-O(n)| O(1) 
+O(1)| O(1) 
 
 ```swift
 class LinkedListStack<T> {
