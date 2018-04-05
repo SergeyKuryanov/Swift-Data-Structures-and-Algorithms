@@ -1,4 +1,4 @@
-# Data Structures and Algorithms
+# Swift Data Structures and Algorithms
 
 ## Data Structures
 * [Bag](/Bag/)
