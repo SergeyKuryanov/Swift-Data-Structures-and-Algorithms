@@ -16,15 +16,7 @@ class LinkedList<T> {
     }
 
     var head: ListNode?
-    var tail: ListNode? {
-        guard var node = head else { return nil }
-
-        while let next = node.next {
-            node = next
-        }
-
-        return node
-    }
+    var tail: ListNode?
 
     func isEmpty() -> Bool {
         return head == nil
@@ -33,36 +25,49 @@ class LinkedList<T> {
     func appendHead(_ value: T) {
         let newNode = ListNode(value)
         newNode.next = head
-        newNode.prev = tail
         head = newNode
+
+        if tail == nil {
+            tail = head
+        }
     }
 
     func appendTail(_ value: T) {
+
         let newNode = ListNode(value)
-        if let tail = tail {
-            tail.next = newNode
-            head?.prev = tail
-        } else {
-            head = newNode
+        tail?.next = newNode
+        newNode.prev = tail
+        tail = newNode
+
+        if head == nil {
+            head = tail
         }
     }
 
     func removeHead() -> ListNode? {
+        if head == nil && tail != nil {
+            return removeTail()
+        }
+
         let headNode = head
         head = head?.next
+        head?.prev = nil
 
         return headNode
     }
 
     func removeTail() -> ListNode? {
-        guard var node = head else { return nil }
-
-        while let next = node.next, next.next != nil {
-            node = next
+        if tail == nil && head != nil {
+            return removeHead()
         }
 
-        let tailNode = node.next
-        node.next = nil
+        let tailNode = tail
+        tail = tailNode?.prev
+        tail?.next = nil
+
+        if tail == nil {
+            head?.next = nil
+        }
 
         return tailNode
     }
