@@ -32,18 +32,18 @@ func evaluate(_ input: String) -> Int? {
         } else if char.isOperator {
             operatorStack.push(char)
         } else if char.isRightParenthesis {
-            let rightOperator = operandStack.pop()!
-            let leftOperator = operandStack.pop()!
+            let rightOperand = operandStack.pop()!
+            let leftOperand = operandStack.pop()!
 
             switch operatorStack.pop() {
             case "+":
-                operandStack.push(leftOperator + rightOperator)
+                operandStack.push(leftOperand + rightOperand)
             case "-":
-                operandStack.push(leftOperator - rightOperator)
+                operandStack.push(leftOperand - rightOperand)
             case "*":
-                operandStack.push(leftOperator * rightOperator)
+                operandStack.push(leftOperand * rightOperand)
             default:
-                operandStack.push(leftOperator / rightOperator)
+                operandStack.push(leftOperand / rightOperand)
             }
         }
     }
