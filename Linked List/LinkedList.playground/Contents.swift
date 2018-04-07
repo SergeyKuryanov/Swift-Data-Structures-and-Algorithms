@@ -47,7 +47,7 @@ class LinkedList<T> {
     func removeHead() -> ListNode? {
         let headNode = head
         head = head?.next
-
+        
         return headNode
     }
 
@@ -67,6 +67,23 @@ class LinkedList<T> {
         node.next = nil
 
         return tailNode
+    }
+
+    func remove(at index: Int) -> ListNode? {
+        guard index > 0 else {
+            return removeHead()
+        }
+
+        var node = head
+
+        for _ in 1..<index {
+            node = node?.next
+        }
+
+        let deletedNode = node?.next
+        node?.next = node?.next?.next
+
+        return deletedNode
     }
 }
 
@@ -91,6 +108,8 @@ linkedList.removeTail()
 linkedList.appendTail(3)
 linkedList.appendTail(4)
 linkedList.appendHead(5)
+linkedList.remove(at: 1)
+linkedList.appendHead(10)
 linkedList.removeHead()
 linkedList.removeTail()
 linkedList.removeTail()
@@ -122,6 +141,7 @@ class DoubleLinkedList<T> {
 
     func appendHead(_ value: T) {
         let newNode = ListNode(value)
+        head?.prev = newNode
         newNode.next = head
         head = newNode
 
@@ -169,6 +189,23 @@ class DoubleLinkedList<T> {
 
         return tailNode
     }
+
+    func remove(at index: Int) -> ListNode? {
+        guard index > 0 else {
+            return removeHead()
+        }
+
+        var node = head
+
+        for _ in 0..<index {
+            node = node?.next
+        }
+
+        node?.prev?.next = node?.next
+        node?.next?.prev = node?.prev
+
+        return node
+    }
 }
 
 extension DoubleLinkedList: CustomStringConvertible {
@@ -187,6 +224,11 @@ extension DoubleLinkedList: CustomStringConvertible {
 let doubleLinkedList = DoubleLinkedList<Int>()
 doubleLinkedList.appendHead(1)
 doubleLinkedList.appendHead(2)
+doubleLinkedList.appendHead(3)
+doubleLinkedList.appendHead(4)
+doubleLinkedList.remove(at: 0)
+doubleLinkedList.remove(at: 1)
+doubleLinkedList.appendHead(10)
 doubleLinkedList.removeTail()
 doubleLinkedList.appendTail(3)
 doubleLinkedList.appendTail(4)

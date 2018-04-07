@@ -12,12 +12,16 @@ O(1)        | O(1)        | O(n)        | O(n)
 class LinkedList<T> {
     typealias ListNode = Node<T>
 
-    class Node<T> {
+    class Node<T>: CustomStringConvertible {
         var next: Node<T>?
         let value: T
 
         init(_ value: T) {
             self.value = value
+        }
+
+        public var description: String {
+            return String(describing: value)
         }
     }
 
@@ -54,7 +58,7 @@ class LinkedList<T> {
     func removeHead() -> ListNode? {
         let headNode = head
         head = head?.next
-
+        
         return headNode
     }
 
@@ -75,6 +79,23 @@ class LinkedList<T> {
 
         return tailNode
     }
+
+    func remove(at index: Int) -> ListNode? {
+        guard index > 0 else {
+            return removeHead()
+        }
+
+        var node = head
+
+        for _ in 1..<index {
+            node = node?.next
+        }
+
+        let deletedNode = node?.next
+        node?.next = node?.next?.next
+
+        return deletedNode
+    }
 }
 ```
 
@@ -90,13 +111,17 @@ O(1)        | O(1)        | O(1)        | O(1)
 class DoubleLinkedList<T> {
     typealias ListNode = Node<T>
 
-    class Node<T> {
+    class Node<T>: CustomStringConvertible {
         var next: Node<T>?
         var prev: Node<T>?
         let value: T
 
         init(_ value: T) {
             self.value = value
+        }
+
+        public var description: String {
+            return String(describing: value)
         }
     }
 
@@ -109,6 +134,7 @@ class DoubleLinkedList<T> {
 
     func appendHead(_ value: T) {
         let newNode = ListNode(value)
+        head?.prev = newNode
         newNode.next = head
         head = newNode
 
@@ -155,6 +181,23 @@ class DoubleLinkedList<T> {
         }
 
         return tailNode
+    }
+
+    func remove(at index: Int) -> ListNode? {
+        guard index > 0 else {
+            return removeHead()
+        }
+
+        var node = head
+
+        for _ in 0..<index {
+            node = node?.next
+        }
+
+        node?.prev?.next = node?.next
+        node?.next?.prev = node?.prev
+
+        return node
     }
 }
 ```
