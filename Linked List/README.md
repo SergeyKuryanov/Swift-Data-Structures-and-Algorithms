@@ -12,7 +12,7 @@ O(1)        | O(1)        | O(n)        | O(n)
 class LinkedList<T> {
     typealias ListNode = Node<T>
 
-    class Node<T>: CustomStringConvertible {
+    class Node<T> {
         var next: Node<T>?
         let value: T
 
@@ -100,6 +100,12 @@ class LinkedList<T> {
         defer { node.next = node.next?.next }
         return node.next
     }
+
+    func insert(_ node: ListNode?, after anotherNode: ListNode?) {
+        guard let node = node, let anotherNode = anotherNode else { return }
+        node.next = anotherNode.next
+        anotherNode.next = node
+    }
 }
 ```
 
@@ -141,7 +147,7 @@ O(1)        | O(1)        | O(1)        | O(1)
 class DoubleLinkedList<T> {
     typealias ListNode = Node<T>
 
-    class Node<T>: CustomStringConvertible {
+    class Node<T> {
         var next: Node<T>?
         var prev: Node<T>?
         let value: T
@@ -237,6 +243,15 @@ class DoubleLinkedList<T> {
         }
 
         return node.next
+    }
+
+    func insert(_ node: ListNode?, after anotherNode: ListNode?) {
+        guard let node = node, let anotherNode = anotherNode else { return }
+        node.next = anotherNode.next
+        node.prev = anotherNode
+
+        anotherNode.next = node
+        node.next?.prev = node
     }
 }
 ```

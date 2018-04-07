@@ -89,6 +89,12 @@ class LinkedList<T> {
         defer { node.next = node.next?.next }
         return node.next
     }
+
+    func insert(_ node: ListNode?, after anotherNode: ListNode?) {
+        guard let node = node, let anotherNode = anotherNode else { return }
+        node.next = anotherNode.next
+        anotherNode.next = node
+    }
 }
 
 extension LinkedList: Sequence {
@@ -138,6 +144,7 @@ linkedList.appendTail(4)
 linkedList.appendHead(5)
 linkedList.remove(at: 1)
 linkedList.appendHead(10)
+linkedList.insert(linkedList.removeTail(), after: linkedList.head)
 linkedList.removeHead()
 linkedList.removeTail()
 linkedList.removeTail()
@@ -240,11 +247,24 @@ class DoubleLinkedList<T> {
 
     func removeAfter(_ node: ListNode) -> ListNode? {
         defer {
+            if tail === node.next {
+                tail = node
+            }
+            
             node.next = node.next?.next
             node.next?.prev = node
         }
 
         return node.next
+    }
+
+    func insert(_ node: ListNode?, after anotherNode: ListNode?) {
+        guard let node = node, let anotherNode = anotherNode else { return }
+        node.next = anotherNode.next
+        node.prev = anotherNode
+
+        anotherNode.next = node
+        node.next?.prev = node
     }
 }
 
@@ -290,8 +310,8 @@ doubleLinkedList.removeAfter(doubleLinkedList.head!)
 doubleLinkedList.appendHead(3)
 doubleLinkedList.appendHead(4)
 doubleLinkedList.remove(at: 0)
-doubleLinkedList.remove(at: 1)
 doubleLinkedList.appendHead(10)
+doubleLinkedList.insert(doubleLinkedList.removeTail(), after: doubleLinkedList.head)
 doubleLinkedList.removeTail()
 doubleLinkedList.appendTail(3)
 doubleLinkedList.appendTail(4)
