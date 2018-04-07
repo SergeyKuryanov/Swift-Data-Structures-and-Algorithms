@@ -80,10 +80,14 @@ class LinkedList<T> {
             node = node?.next
         }
 
-        let deletedNode = node?.next
-        node?.next = node?.next?.next
+        if node == nil { return nil }
 
-        return deletedNode
+        return removeAfter(node!)
+    }
+
+    func removeAfter(_ node: ListNode) -> ListNode? {
+        defer { node.next = node.next?.next }
+        return node.next
     }
 }
 
@@ -123,7 +127,9 @@ extension LinkedList: CustomStringConvertible {
 }
 
 let linkedList = LinkedList<Int>()
+linkedList.appendHead(0)
 linkedList.appendHead(1)
+linkedList.removeAfter(linkedList.head!)
 linkedList.removeTail()
 linkedList.appendHead(2)
 linkedList.removeTail()
@@ -231,6 +237,15 @@ class DoubleLinkedList<T> {
 
         return node
     }
+
+    func removeAfter(_ node: ListNode) -> ListNode? {
+        defer {
+            node.next = node.next?.next
+            node.next?.prev = node
+        }
+
+        return node.next
+    }
 }
 
 extension DoubleLinkedList: Sequence {
@@ -271,6 +286,7 @@ extension DoubleLinkedList: CustomStringConvertible {
 let doubleLinkedList = DoubleLinkedList<Int>()
 doubleLinkedList.appendHead(1)
 doubleLinkedList.appendHead(2)
+doubleLinkedList.removeAfter(doubleLinkedList.head!)
 doubleLinkedList.appendHead(3)
 doubleLinkedList.appendHead(4)
 doubleLinkedList.remove(at: 0)

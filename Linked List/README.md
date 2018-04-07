@@ -91,10 +91,14 @@ class LinkedList<T> {
             node = node?.next
         }
 
-        let deletedNode = node?.next
-        node?.next = node?.next?.next
+        if node == nil { return nil }
 
-        return deletedNode
+        return removeAfter(node!)
+    }
+
+    func removeAfter(_ node: ListNode) -> ListNode? {
+        defer { node.next = node.next?.next }
+        return node.next
     }
 }
 ```
@@ -224,6 +228,15 @@ class DoubleLinkedList<T> {
         node?.next?.prev = node?.prev
 
         return node
+    }
+
+    func removeAfter(_ node: ListNode) -> ListNode? {
+        defer {
+            node.next = node.next?.next
+            node.next?.prev = node
+        }
+
+        return node.next
     }
 }
 ```
