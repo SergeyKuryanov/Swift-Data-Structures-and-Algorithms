@@ -1,17 +1,21 @@
 import Foundation
 
-class Stack<T> {
+struct Stack<T> {
     private var array = Array<T>()
     var count: Int {
         return array.count
     }
 
-    func pop() -> T? {
+    mutating func pop() -> T? {
         return array.removeLast()
     }
 
-    func push(_ value: T) {
+    mutating func push(_ value: T) {
         array.append(value)
+    }
+
+    func peek() -> T? {
+        return array.last
     }
 }
 
@@ -27,8 +31,8 @@ extension Character {
 }
 
 func evaluate(_ input: String) -> Int? {
-    let operatorStack = Stack<Character>()
-    let operandStack = Stack<Int>()
+    var operatorStack = Stack<Character>()
+    var operandStack = Stack<Int>()
 
     for char in input {
         if let operand = Int(String(char)) {
