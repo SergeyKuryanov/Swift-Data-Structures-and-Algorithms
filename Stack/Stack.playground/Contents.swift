@@ -116,7 +116,7 @@ linkedListStack.pop()
 linkedListStack.push(5)
 
 class ArrayStack<T> {
-    private var array = Array<T?>()
+    private var array = Array<T>()
     var count: Int {
         return array.count
     }
@@ -148,7 +148,7 @@ arrayStack.pop()
 arrayStack.push(5)
 
 class ResizableArrayStack<T> {
-    private var array = Array<T?>(repeating: nil, count: 1)
+    private var array = Array<T>(repeating: nil, count: 1)
     private var count = 0
 
     func pop() -> T? {
@@ -174,7 +174,7 @@ class ResizableArrayStack<T> {
     }
 
     private func resizeTo(size: Int) {
-        var newArray = Array<T?>(repeating: nil, count: size)
+        var newArray = Array<T>(repeating: nil, count: size)
         newArray[0..<count] = array[0..<count]
         array = newArray
     }

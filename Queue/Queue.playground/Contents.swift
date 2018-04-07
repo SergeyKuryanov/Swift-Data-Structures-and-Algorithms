@@ -116,7 +116,7 @@ linkedListQueue.enqueue(5)
 linkedListQueue.dequeue()
 
 class ArrayQueue<T> {
-    private var array = Array<T?>()
+    private var array = Array<T>()
     private var count: Int {
         return array.count
     }
@@ -148,7 +148,7 @@ arrayQueue.enqueue(5)
 arrayQueue.dequeue()
 
 class ResizableArrayQueue<T> {
-    private var array = Array<T?>(repeating: nil, count: 1)
+    private var array = Array<T>(repeating: nil, count: 1)
     private var headIndex = 0
     private var tailIndex = 0
     private var count: Int {
@@ -181,7 +181,7 @@ class ResizableArrayQueue<T> {
     }
 
     private func resizeTo(size: Int) {
-        var newArray = Array<T?>(repeating: nil, count: size)
+        var newArray = Array<T>(repeating: nil, count: size)
         newArray[0..<count] = array[headIndex..<tailIndex]
         array = newArray
         tailIndex = count
