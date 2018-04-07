@@ -87,6 +87,28 @@ class LinkedList<T> {
     }
 }
 
+extension LinkedList: Sequence {
+    struct ListItetator: IteratorProtocol {
+        private var current: ListNode?
+
+        init(current: ListNode?) {
+            self.current = current
+        }
+
+        mutating func next() -> ListNode? {
+            defer {
+                current = current?.next
+            }
+
+            return current
+        }
+    }
+
+    func makeIterator() -> ListItetator {
+        return ListItetator(current: head)
+    }
+}
+
 extension LinkedList: CustomStringConvertible {
     public var description: String {
         var desc = "["
@@ -114,6 +136,9 @@ linkedList.removeHead()
 linkedList.removeTail()
 linkedList.removeTail()
 
+for node in linkedList {
+    print(node.value)
+}
 
 class DoubleLinkedList<T> {
     typealias ListNode = Node<T>
@@ -208,6 +233,28 @@ class DoubleLinkedList<T> {
     }
 }
 
+extension DoubleLinkedList: Sequence {
+    struct ListItetator: IteratorProtocol {
+        private var current: ListNode?
+
+        init(current: ListNode?) {
+            self.current = current
+        }
+
+        mutating func next() -> ListNode? {
+            defer {
+                current = current?.next
+            }
+
+            return current
+        }
+    }
+
+    func makeIterator() -> ListItetator {
+        return ListItetator(current: head)
+    }
+}
+
 extension DoubleLinkedList: CustomStringConvertible {
     public var description: String {
         var desc = "["
@@ -238,3 +285,6 @@ doubleLinkedList.removeHead()
 doubleLinkedList.removeHead()
 doubleLinkedList.removeTail()
 
+for node in doubleLinkedList {
+    print(node.value)
+}

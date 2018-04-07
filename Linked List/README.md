@@ -99,6 +99,32 @@ class LinkedList<T> {
 }
 ```
 
+Usually it's useful to interate over linked list, this can be done by implementing Sequence and IteratorProtocol protocols
+
+```swift
+extension LinkedList: Sequence {
+    struct ListItetator: IteratorProtocol {
+        private var current: ListNode?
+
+        init(current: ListNode?) {
+            self.current = current
+        }
+
+        mutating func next() -> ListNode? {
+            defer {
+                current = current?.next
+            }
+
+            return current
+        }
+    }
+
+    func makeIterator() -> ListItetator {
+        return ListItetator(current: head)
+    }
+}
+```
+
 ## Double Linked List
 
 Contains references to next and previous node. In trade of extra memory gain constant time for tail appending and removing.
