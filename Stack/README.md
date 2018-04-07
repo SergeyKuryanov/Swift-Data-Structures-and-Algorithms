@@ -11,15 +11,19 @@ Pop | Push
 O(1)| O(1) 
 
 ```swift
-class LinkedListStack<T> {
+struct LinkedListStack<T> {
     private let linkedList = LinkedList<T>()
 
-    func pop() -> T? {
+    mutating func pop() -> T? {
         return linkedList.removeHead()?.value
     }
 
-    func push(_ value: T) {
+    mutating func push(_ value: T) {
         linkedList.appendHead(value)
+    }
+
+    func peek() -> T? {
+        return linkedList.head?.value
     }
 }
 ```
@@ -31,18 +35,45 @@ Pop | Push
 O(1)| O(1)
 
 ```swift
-class ArrayStack<T> {
+struct ArrayStack<T> {
     private var array = Array<T>()
     var count: Int {
         return array.count
     }
 
-    func pop() -> T? {
+    mutating func pop() -> T? {
         return array.removeLast()
     }
 
-    func push(_ value: T) {
+    mutating func push(_ value: T) {
         array.append(value)
+    }
+
+    func peek() -> T? {
+        return array.last
+    }
+}
+```
+
+Usually it's useful to interate over stack, this can be done by implementing `Sequence` and `IteratorProtocol` protocols
+
+```swift
+extension ArrayStack: Sequence {
+    struct StackItetator: IteratorProtocol {
+        private var elements: [T]
+
+        init(elements: [T]) {
+            self.elements = elements
+        }
+
+        mutating func next() -> T? {
+            guard !elements.isEmpty else { return nil }
+            return elements.popLast()
+        }
+    }
+
+    func makeIterator() -> StackItetator {
+        return StackItetator(elements: array)
     }
 }
 ```
@@ -50,11 +81,11 @@ class ArrayStack<T> {
 In some cases array might need to be resized manually. In this case amortized complexity the same.
 
 ```swift
-class ResizableArrayStack<T> {
-    private var array = Array<T>(repeating: nil, count: 1)
+struct ResizableArrayStack<T> {
+    private var array = Array<T?>(repeating: nil, count: 1)
     private var count = 0
 
-    func pop() -> T? {
+    mutating func pop() -> T? {
         defer {
             resizeIfNeed()
         }
@@ -62,13 +93,17 @@ class ResizableArrayStack<T> {
         return array[count]
     }
 
-    func push(_ value: T) {
+    mutating func push(_ value: T) {
         array[count] = value
         count += 1
         resizeIfNeed()
     }
 
-    private func resizeIfNeed() {
+    func peek() -> T? {
+        return array[count - 1]
+    }
+
+    mutating private func resizeIfNeed() {
         if count == array.count {
             resizeTo(size: count * 2)
         } else if count <= array.count / 4 {
@@ -76,8 +111,8 @@ class ResizableArrayStack<T> {
         }
     }
 
-    private func resizeTo(size: Int) {
-        var newArray = Array<T>(repeating: nil, count: size)
+    mutating private func resizeTo(size: Int) {
+        var newArray = Array<T?>(repeating: nil, count: size)
         newArray[0..<count] = array[0..<count]
         array = newArray
     }

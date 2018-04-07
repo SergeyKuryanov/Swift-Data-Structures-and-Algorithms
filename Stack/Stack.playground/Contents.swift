@@ -86,15 +86,19 @@ extension LinkedList: CustomStringConvertible {
     }
 }
 
-class LinkedListStack<T> {
+struct LinkedListStack<T> {
     private let linkedList = LinkedList<T>()
 
-    func pop() -> T? {
+    mutating func pop() -> T? {
         return linkedList.removeHead()?.value
     }
 
-    func push(_ value: T) {
+    mutating func push(_ value: T) {
         linkedList.appendHead(value)
+    }
+
+    func peek() -> T? {
+        return linkedList.head?.value
     }
 }
 
@@ -104,7 +108,7 @@ extension LinkedListStack: CustomStringConvertible {
     }
 }
 
-let linkedListStack = LinkedListStack<Int>()
+var linkedListStack = LinkedListStack<Int>()
 linkedListStack.push(0)
 linkedListStack.push(1)
 linkedListStack.push(2)
@@ -114,19 +118,43 @@ linkedListStack.push(3)
 linkedListStack.push(4)
 linkedListStack.pop()
 linkedListStack.push(5)
+linkedListStack.peek()
 
-class ArrayStack<T> {
+struct ArrayStack<T> {
     private var array = Array<T>()
     var count: Int {
         return array.count
     }
 
-    func pop() -> T? {
+    mutating func pop() -> T? {
         return array.removeLast()
     }
 
-    func push(_ value: T) {
+    mutating func push(_ value: T) {
         array.append(value)
+    }
+
+    func peek() -> T? {
+        return array.last
+    }
+}
+
+extension ArrayStack: Sequence {
+    struct StackItetator: IteratorProtocol {
+        private var elements: [T]
+
+        init(elements: [T]) {
+            self.elements = elements
+        }
+
+        mutating func next() -> T? {
+            guard !elements.isEmpty else { return nil }
+            return elements.popLast()
+        }
+    }
+
+    func makeIterator() -> StackItetator {
+        return StackItetator(elements: array)
     }
 }
 
@@ -136,7 +164,7 @@ extension ArrayStack: CustomStringConvertible {
     }
 }
 
-let arrayStack = ArrayStack<Int>()
+var arrayStack = ArrayStack<Int>()
 arrayStack.push(0)
 arrayStack.push(1)
 arrayStack.push(2)
@@ -146,12 +174,17 @@ arrayStack.push(3)
 arrayStack.push(4)
 arrayStack.pop()
 arrayStack.push(5)
+arrayStack.peek()
 
-class ResizableArrayStack<T> {
-    private var array = Array<T>(repeating: nil, count: 1)
+for element in arrayStack {
+    print(element)
+}
+
+struct ResizableArrayStack<T> {
+    private var array = Array<T?>(repeating: nil, count: 1)
     private var count = 0
 
-    func pop() -> T? {
+    mutating func pop() -> T? {
         defer {
             resizeIfNeed()
         }
@@ -159,13 +192,17 @@ class ResizableArrayStack<T> {
         return array[count]
     }
 
-    func push(_ value: T) {
+    mutating func push(_ value: T) {
         array[count] = value
         count += 1
         resizeIfNeed()
     }
 
-    private func resizeIfNeed() {
+    func peek() -> T? {
+        return array[count - 1]
+    }
+
+    mutating private func resizeIfNeed() {
         if count == array.count {
             resizeTo(size: count * 2)
         } else if count <= array.count / 4 {
@@ -173,8 +210,8 @@ class ResizableArrayStack<T> {
         }
     }
 
-    private func resizeTo(size: Int) {
-        var newArray = Array<T>(repeating: nil, count: size)
+    mutating private func resizeTo(size: Int) {
+        var newArray = Array<T?>(repeating: nil, count: size)
         newArray[0..<count] = array[0..<count]
         array = newArray
     }
@@ -186,7 +223,7 @@ extension ResizableArrayStack: CustomStringConvertible {
     }
 }
 
-let resizableArrayStack = ResizableArrayStack<Int>()
+var resizableArrayStack = ResizableArrayStack<Int>()
 resizableArrayStack.push(0)
 resizableArrayStack.push(1)
 resizableArrayStack.push(2)
@@ -196,3 +233,5 @@ resizableArrayStack.push(3)
 resizableArrayStack.push(4)
 resizableArrayStack.pop()
 resizableArrayStack.push(5)
+resizableArrayStack.peek()
+
