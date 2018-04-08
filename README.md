@@ -2,6 +2,7 @@
 
 ## Data Structures
 * [Bag](/Bag/)
+* [Deque](/Deque/)
 * [Linked List](/Linked%20List/)
 * [Queue](/Queue/)
 * [Stack](/Stack/)
