@@ -279,6 +279,24 @@ struct RandomizedQueue<T> {
     }
 }
 
+extension RandomizedQueue: Sequence {
+    struct QueueItetator: IteratorProtocol {
+        private var queue: RandomizedQueue
+
+        init(queue: RandomizedQueue) {
+            self.queue = queue
+        }
+
+        mutating func next() -> T? {
+            return queue.dequeue()
+        }
+    }
+
+    func makeIterator() -> QueueItetator {
+        return QueueItetator(queue: self)
+    }
+}
+
 extension RandomizedQueue: CustomStringConvertible {
     public var description: String {
         return "count: \(count), \(array.compactMap { $0 })"
@@ -295,6 +313,11 @@ randomizedQueue.enqueue(6)
 randomizedQueue.enqueue(7)
 randomizedQueue.enqueue(8)
 randomizedQueue.enqueue(9)
+
+for value in randomizedQueue {
+    print(value)
+}
+
 randomizedQueue.dequeue()
 randomizedQueue.dequeue()
 randomizedQueue.dequeue()

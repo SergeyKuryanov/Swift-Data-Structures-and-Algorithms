@@ -178,3 +178,25 @@ struct RandomizedQueue<T> {
     }
 }
 ```
+
+To iterate over randomized queue we can use nice "hack", just deque all items from queue copy:
+
+```swift
+extension RandomizedQueue: Sequence {
+    struct QueueItetator: IteratorProtocol {
+        private var queue: RandomizedQueue
+
+        init(queue: RandomizedQueue) {
+            self.queue = queue
+        }
+
+        mutating func next() -> T? {
+            return queue.dequeue()
+        }
+    }
+
+    func makeIterator() -> QueueItetator {
+        return QueueItetator(queue: self)
+    }
+}
+```
