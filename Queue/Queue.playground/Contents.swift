@@ -1,3 +1,5 @@
+import Foundation
+
 class LinkedList<T> {
     typealias ListNode = Node<T>
 
@@ -181,12 +183,13 @@ struct ResizableArrayQueue<T> {
     mutating func dequeue() -> T? {
         guard count > 0 else { return nil }
 
-        let value = array[headIndex]
-        array[headIndex] = nil
-        headIndex += 1
-        resizeIfNeed()
+        defer {
+            array[headIndex] = nil
+            headIndex += 1
+            resizeIfNeed()
+        }
 
-        return value
+        return array[headIndex]
     }
 
     mutating func enqueue(_ value: T) {
@@ -228,3 +231,75 @@ resizableArrayQueue.dequeue()
 resizableArrayQueue.dequeue()
 resizableArrayQueue.enqueue(5)
 resizableArrayQueue.dequeue()
+
+struct RandomizedQueue<T> {
+    private var array = Array<T?>(repeating: nil, count: 1)
+    private var headIndex = 0
+    private var tailIndex = 0
+    private var count: Int {
+        return tailIndex - headIndex
+    }
+
+    mutating func dequeue() -> T? {
+        guard count > 0 else { return nil }
+
+        let randomIndex = Int(arc4random_uniform(UInt32(count))) + headIndex
+
+        array.swapAt(headIndex, randomIndex)
+
+        defer {
+            array[headIndex] = nil
+            headIndex += 1
+            resizeIfNeed()
+        }
+
+        return array[headIndex]
+    }
+
+    mutating func enqueue(_ value: T) {
+        array[tailIndex] = value
+        tailIndex += 1
+        resizeIfNeed()
+    }
+
+    mutating private func resizeIfNeed() {
+        if count == array.count {
+            resizeTo(size: count * 2)
+        } else if count <= array.count / 4 {
+            resizeTo(size: array.count / 2)
+        }
+    }
+
+    mutating private func resizeTo(size: Int) {
+        var newArray = Array<T?>(repeating: nil, count: size)
+        newArray[0..<count] = array[headIndex..<tailIndex]
+        array = newArray
+        tailIndex = count
+        headIndex = 0
+    }
+}
+
+extension RandomizedQueue: CustomStringConvertible {
+    public var description: String {
+        return "count: \(count), \(array.compactMap { $0 })"
+    }
+}
+
+var randomizedQueue = RandomizedQueue<Int>()
+randomizedQueue.enqueue(1)
+randomizedQueue.enqueue(2)
+randomizedQueue.enqueue(3)
+randomizedQueue.enqueue(4)
+randomizedQueue.enqueue(5)
+randomizedQueue.enqueue(6)
+randomizedQueue.enqueue(7)
+randomizedQueue.enqueue(8)
+randomizedQueue.enqueue(9)
+randomizedQueue.dequeue()
+randomizedQueue.dequeue()
+randomizedQueue.dequeue()
+randomizedQueue.dequeue()
+randomizedQueue.dequeue()
+randomizedQueue.dequeue()
+randomizedQueue.dequeue()
+randomizedQueue.dequeue()
