@@ -5,6 +5,7 @@
 * [Linked List](/Linked%20List/)
 * [Queue](/Queue/)
 * [Stack](/Stack/)
+* [Steque](/Steque/)
 * [Union-Find](/Union-Find/)
 
 ## Algorithms
