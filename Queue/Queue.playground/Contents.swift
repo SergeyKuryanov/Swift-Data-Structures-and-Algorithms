@@ -199,7 +199,7 @@ struct ResizableArrayQueue<T> {
     }
 
     mutating private func resizeIfNeed() {
-        if count == array.count {
+        if tailIndex >= array.count {
             resizeTo(size: count * 2)
         } else if count <= array.count / 4 {
             resizeTo(size: array.count / 2)
@@ -263,7 +263,7 @@ struct RandomizedQueue<T> {
     }
 
     mutating private func resizeIfNeed() {
-        if count == array.count {
+        if tailIndex >= array.count {
             resizeTo(size: count * 2)
         } else if count <= array.count / 4 {
             resizeTo(size: array.count / 2)
