@@ -9,9 +9,9 @@ O(1)  | O(1)
 ```swift
 struct RingBuffer<T> {
     private var array: Array<T?>
+    private var filledCount = 0
     private var readIndex = 0
-    private var writeIndex = 0
-    private var nextWriteMovesRead = false
+    private var writeIndex: Int { return (readIndex + filledCount) % array.capacity }
 
     init(capacity: Int) {
         array = Array<T?>(repeating: nil, count: capacity)
@@ -20,35 +20,23 @@ struct RingBuffer<T> {
     mutating func write(_ value: T) {
         array[writeIndex] = value
 
-        writeIndex += 1
-        writeIndex = min(writeIndex, writeIndex % array.capacity)
-
-        if nextWriteMovesRead {
-            readIndex = writeIndex
-            nextWriteMovesRead = false
-        }
-
-        if writeIndex == readIndex {
-            nextWriteMovesRead = true
+        if filledCount == array.capacity {
+            readIndex = (readIndex + 1) % array.capacity
+        } else {
+            filledCount += 1
         }
     }
 
     mutating func read() -> T? {
-        nextWriteMovesRead = false
+        guard filledCount > 0 else { return nil }
 
-        let value = array[readIndex]
-
-        if value == nil {
-            readIndex = 0
-            writeIndex = 0
-            return nil
+        defer {
+            array[readIndex] = nil
+            readIndex = (readIndex + 1) % array.capacity
+            filledCount -= 1
         }
 
-        array[readIndex] = nil
-        readIndex += 1
-        readIndex = min(readIndex, readIndex % array.capacity)
-
-        return value
+        return array[readIndex]
     }
 }
 ```
