@@ -7,6 +7,7 @@
 * [Queue](/Queue/)
 * [Stack](/Stack/)
 * [Steque](/Steque/)
+* [Ring Buffer](/Ring%20Buffer/)
 * [Union-Find](/Union-Find/)
 
 ## Algorithms
