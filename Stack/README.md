@@ -41,7 +41,7 @@ struct ArrayStack<T> {
         return array.count
     }
 
-    mutating func pop() -> T? {
+    mutating func pop() -> T {
         return array.removeLast()
     }
 
