@@ -106,6 +106,19 @@ class LinkedList<T> {
         node.next = anotherNode.next
         anotherNode.next = node
     }
+    
+    func reverse() {
+        var node = head
+        var prev: ListNode? = nil
+        while node != nil {
+            let next = node?.next
+            node?.next = prev
+            prev = node
+            node = next
+        }
+        
+        head = prev
+    }
 }
 ```
 

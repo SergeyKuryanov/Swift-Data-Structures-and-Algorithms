@@ -95,6 +95,19 @@ class LinkedList<T> {
         node.next = anotherNode.next
         anotherNode.next = node
     }
+
+    func reverse() {
+        var node = head
+        var prev: ListNode? = nil
+        while node != nil {
+            let next = node?.next
+            node?.next = prev
+            prev = node
+            node = next
+        }
+
+        head = prev
+    }
 }
 
 extension LinkedList: Sequence {
@@ -142,6 +155,9 @@ linkedList.removeTail()
 linkedList.appendTail(3)
 linkedList.appendTail(4)
 linkedList.appendHead(5)
+
+linkedList.reverse()
+
 linkedList.remove(at: 1)
 linkedList.appendHead(10)
 linkedList.insert(linkedList.removeTail(), after: linkedList.head)
