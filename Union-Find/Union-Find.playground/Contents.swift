@@ -13,7 +13,15 @@ class QuickFind {
         let pRoot = storage[p]
         let qRoot = storage[q]
 
+        guard pRoot != qRoot else { return }
+
         storage = storage.map { $0 == pRoot ? qRoot : $0 }
+    }
+}
+
+extension QuickFind: CustomStringConvertible {
+    var description: String {
+        return "\(storage)"
     }
 }
 
@@ -47,9 +55,16 @@ class QuickUnion {
 
     func rootRecursive(of node: Int) -> Int {
         let nodeRoot = storage[node]
+
         guard nodeRoot != node else { return node }
 
         return root(of: nodeRoot)
+    }
+}
+
+extension QuickUnion: CustomStringConvertible {
+    var description: String {
+        return "\(storage)"
     }
 }
 
@@ -82,16 +97,6 @@ class WeightedQuickUnion: QuickUnion {
 
 class WeightedQuickUnionWithPathCompression: WeightedQuickUnion {
     override func root(of node: Int) -> Int {
-        let nodeRoot = storage[node]
-
-        guard nodeRoot != node else { return node }
-
-        storage[node] = storage[nodeRoot]
-
-        return root(of: nodeRoot)
-    }
-
-    override func rootRecursive(of node: Int) -> Int {
         var node = node
 
         while (node != storage[node]) {
@@ -101,4 +106,54 @@ class WeightedQuickUnionWithPathCompression: WeightedQuickUnion {
 
         return node
     }
+
+    override func rootRecursive(of node: Int) -> Int {
+        let nodeRoot = storage[node]
+
+        guard nodeRoot != node else { return node }
+
+        storage[node] = storage[nodeRoot]
+
+        return root(of: nodeRoot)
+    }
 }
+
+var qf = QuickFind(count: 10)
+qf.union(p: 9, q: 0)
+qf.union(p: 3, q: 4)
+qf.union(p: 5, q: 8)
+qf.union(p: 7, q: 2)
+qf.union(p: 2, q: 1)
+qf.union(p: 5, q: 7)
+qf.union(p: 0, q: 3)
+qf.union(p: 4, q: 2)
+
+var uf = QuickUnion(count: 10)
+uf.union(p: 9, q: 0)
+uf.union(p: 3, q: 4)
+uf.union(p: 5, q: 8)
+uf.union(p: 7, q: 2)
+uf.union(p: 2, q: 1)
+uf.union(p: 5, q: 7)
+uf.union(p: 0, q: 3)
+uf.union(p: 4, q: 2)
+
+uf = WeightedQuickUnion(count: 10)
+uf.union(p: 9, q: 0)
+uf.union(p: 3, q: 4)
+uf.union(p: 5, q: 8)
+uf.union(p: 7, q: 2)
+uf.union(p: 2, q: 1)
+uf.union(p: 5, q: 7)
+uf.union(p: 0, q: 3)
+uf.union(p: 4, q: 2)
+
+uf = WeightedQuickUnionWithPathCompression(count: 10)
+uf.union(p: 9, q: 0)
+uf.union(p: 3, q: 4)
+uf.union(p: 5, q: 8)
+uf.union(p: 7, q: 2)
+uf.union(p: 2, q: 1)
+uf.union(p: 5, q: 7)
+uf.union(p: 0, q: 3)
+uf.union(p: 4, q: 2)
