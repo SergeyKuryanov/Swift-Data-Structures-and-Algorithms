@@ -31,6 +31,8 @@ class QuickFind {
         let pRoot = storage[p]
         let qRoot = storage[q]
 
+        guard pRoot != qRoot else { return }
+
         storage = storage.map { $0 == pRoot ? qRoot : $0 }
     }
 }
@@ -134,6 +136,17 @@ O(n)       | Very close, but not O(1) | Very close, but not O(1)
 ```swift
 class WeightedQuickUnionWithPathCompression: WeightedQuickUnion {
     override func root(of node: Int) -> Int {
+        var node = node
+
+        while node != storage[node] {
+            storage[node] = storage[storage[node]]
+            node = storage[node]
+        }
+
+        return node
+    }
+
+    override func rootRecursive(of node: Int) -> Int {
         let nodeRoot = storage[node]
 
         guard nodeRoot != node else { return node }
@@ -141,17 +154,6 @@ class WeightedQuickUnionWithPathCompression: WeightedQuickUnion {
         storage[node] = storage[nodeRoot]
 
         return root(of: nodeRoot)
-    }
-
-    override func rootRecursive(of node: Int) -> Int {
-        var node = node
-
-        while (node != storage[node]) {
-            storage[node] = storage[storage[node]]
-            node = storage[node]
-        }
-
-        return node
     }
 }
 ```
