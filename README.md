@@ -16,3 +16,7 @@
 ## Problems
 
 * [Two Sum, Tree Sum, Four Sum](/Problems/N-Sum/)
+
+## Sorting Algorithms
+
+* [Selection Sort](/Sorts/Selection/)
