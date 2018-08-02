@@ -19,4 +19,5 @@
 
 ## Sorting Algorithms
 
-* [Selection Sort](/Sorts/Selection/)
+* [Selection Sort](/Sorts/Selection%20Sort/)
+* [Insertion Sort](/Sorts/Insertion%20Sort/)
