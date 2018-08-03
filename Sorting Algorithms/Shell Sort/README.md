@@ -2,6 +2,8 @@
 
 To exhibit the value of knowing properties of elementary sorts, we next consider a fast algorithm based on insertion sort. Insertion sort is slow for large unordered arrays because the only exchanges it does involve adjacent entries, so items can move through the array only one place at a time. For example, if the item with the smallest key happens to be at the end of the array, N􏰀1 exchanges are needed to get that one item where it belongs. _Shellsort_ is a simple extension of insertion sort that gains speed by allowing exchanges of array entries that are far apart, to produce partially sorted arrays that can be efficiently sorted, eventually by insertion sort.
 
+Complexity: **Better than O(n^2), depends on H choosing strategy** 
+
 ```swift
 extension Array where Element: Comparable {
     mutating func shellSort() {
