@@ -21,3 +21,4 @@
 
 * [Selection Sort](/Sorts/Selection%20Sort/)
 * [Insertion Sort](/Sorts/Insertion%20Sort/)
+* [Shell Sort](/Sorts/Shell%20Sort/)
