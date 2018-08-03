@@ -19,6 +19,6 @@
 
 ## Sorting Algorithms
 
-* [Selection Sort](/Sorts/Selection%20Sort/)
-* [Insertion Sort](/Sorts/Insertion%20Sort/)
-* [Shell Sort](/Sorts/Shell%20Sort/)
+* [Selection Sort](/Sorting%20Algorithms/Selection%20Sort/)
+* [Insertion Sort](/Sorting%20Algorithms/Insertion%20Sort/)
+* [Shell Sort](/Sorting%20Algorithms/Shell%20Sort/)
