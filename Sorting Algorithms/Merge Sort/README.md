@@ -27,13 +27,12 @@ extension Array where Element: Comparable {
         mergeSort(lo: lo, hi: mid)
         mergeSort(lo: mid + 1, hi: hi)
 
-        return merge(lo: lo, hi: hi)
+        return merge(lo: lo, mid: mid, hi: hi)
     }
 
-    private mutating func merge(lo: Int, hi: Int) {
+    private mutating func merge(lo: Int, mid: Int, hi: Int) {
         let aux = self[lo...hi]
 
-        let mid = lo + (hi - lo) / 2
         var leftIndex = lo
         var rightIndex = mid + 1
 
@@ -61,10 +60,10 @@ extension Array where Element: Comparable {
 ```swift
 extension Array where Element: Comparable {
     mutating func mergeSortBottomUp() {
-        var subArraySize = 2
+        var subArraySize = 1
         while subArraySize < count { defer { subArraySize *= 2 }
-            for lo in stride(from: 0, to: count - subArraySize, by: subArraySize) {
-                merge(lo: lo, hi: Swift.min(lo + subArraySize - 1, count - 1))
+            for lo in stride(from: 0, to: count - subArraySize, by: subArraySize * 2) {
+                merge(lo: lo, mid: lo + subArraySize - 1, hi: Swift.min(lo + subArraySize * 2, count) - 1)
             }
         }
     }
