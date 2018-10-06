@@ -22,3 +22,4 @@
 * [Selection Sort](/Sorting%20Algorithms/Selection%20Sort/)
 * [Insertion Sort](/Sorting%20Algorithms/Insertion%20Sort/)
 * [Shell Sort](/Sorting%20Algorithms/Shell%20Sort/)
+* [Merge Sort](/Sorting%20Algorithms/Merge%20Sort/)
