@@ -24,3 +24,4 @@
 * [Shell Sort](/Sorting%20Algorithms/Shell%20Sort/)
 * [Merge Sort](/Sorting%20Algorithms/Merge%20Sort/)
 * [Quick Sort](/Sorting%20Algorithms/Quick%20Sort/)
+* [Heap Sort](/Sorting%20Algorithms/Heap%20Sort/)
