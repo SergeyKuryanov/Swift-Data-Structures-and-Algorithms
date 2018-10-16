@@ -9,6 +9,7 @@
 * [Steque](/Steque/)
 * [Ring Buffer](/Ring%20Buffer/)
 * [Union-Find](/Union-Find/)
+* [Priority Queue](/Priority%20Queue/)
 
 ## Algorithms
 * [Dijkstra Expression Evaluation](/Dijkstra%20Expression%20Evaluation/)
