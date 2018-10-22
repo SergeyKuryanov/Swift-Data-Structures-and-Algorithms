@@ -10,6 +10,7 @@
 * [Ring Buffer](/Ring%20Buffer/)
 * [Union-Find](/Union-Find/)
 * [Priority Queue](/Priority%20Queue/)
+* [Binary Search Symbol Table](/Binary%20Search%20Symbol%20Table/)
 
 ## Algorithms
 * [Dijkstra Expression Evaluation](/Dijkstra%20Expression%20Evaluation/)
