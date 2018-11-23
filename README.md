@@ -12,6 +12,7 @@
 * [Priority Queue](/Priority%20Queue/)
 * [Binary Search Symbol Table](/Binary%20Search%20Symbol%20Table/)
 * [Binary Search Tree](/Binary%20Search%20Tree/)
+* [Hash Table](/Hash%20Table/)
 
 ## Algorithms
 * [Dijkstra Expression Evaluation](/Dijkstra%20Expression%20Evaluation/)
