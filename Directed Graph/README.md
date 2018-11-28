@@ -1,18 +1,9 @@
-## Undirected Graph
+## Directed Graph
 
-A graph is a set of vertices and a collection of edges that each connect a pair of vertices.  
-Graph can be represented in few ways:
-- Adjacency matrix  
-N by N boolean array, where i, j represents connection between vertices
-- Adjacency list  
-Array of lists, which represents connected vertices to index edge
-- Adjacency Set
-Array of sets, which represents connected vertices to index edge
-
-Adjacency Set implementation:
+In directed graphs, edges are one-way: the pair of vertices that defines each edge is an ordered pair that specifies a one-way adjacency.
 
 ```swift
-struct Graph {
+struct Digraph {
     private(set) var adjacencySet: [Set<Int>]
     private(set) var edgesCount = 0
     let verticesCount: Int
@@ -24,12 +15,22 @@ struct Graph {
 
     mutating func addEdge(_ from: Int, _ to: Int) {
         adjacencySet[from].insert(to)
-        adjacencySet[to].insert(from)
         edgesCount += 1
     }
 
     func adjacent(to vertice: Int) -> Set<Int> {
         return adjacencySet[vertice]
+    }
+
+    func reversed() -> Digraph {
+        var revercedDigraph = Digraph(verticesCount: verticesCount)
+        for i in 0..<verticesCount {
+            for adjacent in adjacent(to: i) {
+                revercedDigraph.addEdge(adjacent, i)
+            }
+        }
+
+        return revercedDigraph
     }
 }
 ```
@@ -38,17 +39,13 @@ struct Graph {
 
 #### Depth-first search
 
-The classic recursive method for searching in a connected graph (visiting all of its vertices and edges) mimics Tremaux maze exploration but is even simpler to describe. To search a graph, invoke a recursive method that visits vertices. To visit a vertex:
-- Mark it as having been visited.
-- Visit (recursively) all the vertices that are adjacent to it and that have not yet been marked.
-
 ```swift
 struct DepthFirstSearch {
     private var edgeTo: [Int]
     private var marked: [Bool]
     let source: Int
 
-    init(graph: Graph, vertice: Int) {
+    init(graph: Digraph, vertice: Int) {
         source = vertice
 
         edgeTo = Array(0..<graph.verticesCount)
@@ -57,7 +54,7 @@ struct DepthFirstSearch {
         dfs(graph: graph, vertice: vertice)
     }
 
-    private mutating func dfs(graph: Graph, vertice: Int) {
+    private mutating func dfs(graph: Digraph, vertice: Int) {
         marked[vertice] = true
         graph.adjacent(to: vertice).forEach {
             if marked[$0] { return }
@@ -88,22 +85,20 @@ struct DepthFirstSearch {
 
 #### Breadth-first search
 
-Unline DFS, BFS examines adjacent nodes first, before moving to next level. We use queue for that. 
-
 ```swift
 struct BreadthFirstSearch {
     private var edgeTo: [Int]
     var marked: [Bool]
     let source: Int
 
-    init(graph: Graph, vertice: Int) {
+    init(graph: Digraph, vertice: Int) {
         source = vertice
         edgeTo = Array(0..<graph.verticesCount)
         marked = Array(repeating: false, count: graph.verticesCount)
         bfs(graph: graph, vertice: vertice)
     }
 
-    private mutating func bfs(graph: Graph, vertice: Int) {
+    private mutating func bfs(graph: Digraph, vertice: Int) {
         var queue = Queue<Int>()
 
         marked[vertice] = true
@@ -142,70 +137,88 @@ struct BreadthFirstSearch {
 }
 ```
 
-#### Connected components
+#### Cycles detection
 
-As an example of using DFS - find the connected components of a graph. In theory CC faster than union-find, but in practice union-find faster because does not required to build full representation of graph and in mixed operations.
-
-```swift
-struct ConnectedComponents {
-    private var marked: [Int]
-    var count: Int = 0
-
-    init(graph: Graph) {
-        marked = Array(repeating: -1, count: graph.verticesCount)
-        for vertice in 0..<graph.verticesCount {
-            guard marked[vertice] < 0 else { continue }
-
-            dfs(graph: graph, vertice: vertice)
-            count += 1
-        }
-    }
-
-    private mutating func dfs(graph: Graph, vertice: Int) {
-        marked[vertice] = count
-
-        for vertice in graph.adjacent(to: vertice) {
-            guard marked[vertice] < 0 else { continue }
-            dfs(graph: graph, vertice: vertice)
-        }
-    }
-
-    func group(for vertice: Int) -> Int {
-        return marked[vertice]
-    }
-}
-```
-
-#### Cycle detection
+A graph may have an exponential number of cycles so we only ask for one cycle, not all of them. For job scheduling and many other applications it is re- quired that no directed cycle exists, so digraphs where they are absent play a special role and called _directed acyclic graph_
 
 ```swift
-struct Cycle {
+struct DirectedCycle {
     private var marked: [Bool]
-    var isCycle = false
+    private var stack: [Bool]
+    private(set) var isCycle = false
 
-    init(graph: Graph) {
+    init(graph: Digraph) {
         marked = Array(repeating: false, count: graph.verticesCount)
+        stack = Array(repeating: false, count: graph.verticesCount)
 
         for vertice in 0..<graph.verticesCount {
             if isCycle { return }
             if marked[vertice] { continue }
-            dfs(graph: graph, vertice: vertice, source: vertice)
+            dfs(graph: graph, vertice: vertice)
         }
     }
 
-    private mutating func dfs(graph: Graph, vertice: Int, source: Int) {
+    private mutating func dfs(graph: Digraph, vertice: Int) {
         marked[vertice] = true
+        stack[vertice] = true
+        for vertice in graph.adjacent(to: vertice) {
+            if isCycle { return }
 
-        for current in graph.adjacent(to: vertice) {
-            if marked[current] {
-                if current != source {
-                    isCycle = true
-                    return
-                }
-            } else {
-                dfs(graph: graph, vertice: current, source: vertice)
+            if !marked[vertice] {
+                dfs(graph: graph, vertice: vertice)
+            } else if stack[vertice] {
+                isCycle = true
+                return
             }
         }
+
+        stack[vertice] = false
+    }
+}
+```
+
+#### Topological sort
+
+Topological sort solves next problem:
+> Given a set of jobs to be completed, with precedence constraints that specify that certain jobs have to be completed before certain other jobs are begun, how can we schedule the jobs such that they are all completed while still respecting the constraints?
+
+```swift
+struct DepthFirstOrder {
+    private var marked: [Bool]
+    private(set) var preOrder = [Int]()
+    private(set) var postOrder = [Int]()
+
+    init(graph: Digraph) {
+        marked = Array(repeating: false, count: graph.verticesCount)
+
+        for vertice in 0..<graph.verticesCount {
+            if marked[vertice] { continue }
+            dfs(graph: graph, vertice: vertice)
+        }
+    }
+
+    private mutating func dfs(graph: Digraph, vertice: Int) {
+        marked[vertice] = true
+        preOrder.append(vertice)
+
+        for vertice in graph.adjacent(to: vertice) {
+            if marked[vertice] { continue }
+            dfs(graph: graph, vertice: vertice)
+        }
+
+        postOrder.append(vertice)
+    }
+}
+
+struct TopologicalSort {
+    private(set) var order: [Int]
+
+    init?(graph: Digraph) {
+        let cycle = DirectedCycle(graph: graph)
+        guard !cycle.isCycle else { return nil }
+
+        let order = DepthFirstOrder(graph: graph)
+        self.order = order.postOrder.reversed()
     }
 }
 ```

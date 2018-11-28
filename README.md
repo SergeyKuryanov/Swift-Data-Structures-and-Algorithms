@@ -14,6 +14,7 @@
 * [Binary Search Tree](/Binary%20Search%20Tree/)
 * [Hash Table](/Hash%20Table/)
 * [Undirected Graph](/Undirected%20Graph/)
+* [Directed Graph](/Directed%20Graph/)
 
 ## Algorithms
 * [Dijkstra Expression Evaluation](/Dijkstra%20Expression%20Evaluation/)
