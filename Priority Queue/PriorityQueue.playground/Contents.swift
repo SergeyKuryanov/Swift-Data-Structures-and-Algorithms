@@ -1,5 +1,10 @@
-struct MaxPriorityQueue<Item: Comparable> {
+struct PriorityQueue<Item: Comparable> {
     private var storage = [Item]()
+    private var priorityFunction: (_ lhs: Item, _ rhs: Item) -> Bool
+
+    init(priorityFunction: @escaping (_ lhs: Item, _ rhs: Item) -> Bool) {
+        self.priorityFunction = priorityFunction
+    }
 
     mutating func insert(_ item: Item) {
         storage.append(item)
@@ -25,11 +30,11 @@ struct MaxPriorityQueue<Item: Comparable> {
             var childIndex = child(of: index)
             let secondChildIndex = childIndex + 1
 
-            if secondChildIndex < storage.count && storage[childIndex] < storage[secondChildIndex] {
+            if secondChildIndex < storage.count && priorityFunction(storage[childIndex], storage[secondChildIndex]) {
                 childIndex = secondChildIndex
             }
 
-            if storage[childIndex] < storage[index] { break }
+            if priorityFunction(storage[childIndex], storage[index]) { break }
 
             storage.swapAt(childIndex, index)
 
@@ -39,7 +44,7 @@ struct MaxPriorityQueue<Item: Comparable> {
 
     private mutating func swim(_ index: Int) {
         var index = index
-        while index > 0 && storage[parent(of: index)] < storage[index] {
+        while index > 0 && priorityFunction(storage[parent(of: index)], storage[index]) {
             storage.swapAt(parent(of: index), index)
             index = parent(of: index)
         }
@@ -54,7 +59,7 @@ struct MaxPriorityQueue<Item: Comparable> {
     }
 }
 
-var maxPQ = MaxPriorityQueue<Int>()
+var maxPQ = PriorityQueue<Int>(priorityFunction: <)
 maxPQ.insert(3)
 maxPQ.insert(4)
 maxPQ.insert(5)
